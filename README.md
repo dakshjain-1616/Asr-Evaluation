@@ -7,6 +7,55 @@ A comprehensive benchmarking framework for evaluating automatic speech recogniti
 > [![VS Code Extension](https://img.shields.io/badge/VS%20Code-NEO-blue?logo=visualstudiocode)](https://marketplace.visualstudio.com/items?itemName=NeoResearchInc.heyneo)
 > [![Cursor Extension](https://img.shields.io/badge/Cursor-NEO-green?logo=cursor)](https://marketplace.cursorapi.com/items/?itemName=NeoResearchInc.heyneo)
 
+## What Is This?
+
+The **ASR Evaluation Framework** is an enterprise-grade benchmarking tool for comparing speech recognition models. It answers critical questions:
+- Which ASR model is most accurate for my use case?
+- How fast can each model process audio in real-time?
+- How robust is each model against background noise, accents, and degraded audio?
+- What are the tradeoffs between speed and accuracy?
+
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────┐
+│         run_evaluation.py (CLI Entry)               │
+├────────────┬──────────────┬──────────────┬──────────┤
+│ --accuracy │ --speed      │ --all        │ Config   │
+│ Evaluate   │ Evaluate RTF │ Complete     │ Loading  │
+│ WER/CER    │ & Inference  │ Evaluation   │          │
+└────────────┴──────────────┴──────────────┴──────────┘
+              │
+      ┌───────▼────────┐
+      │   Evaluator    │
+      │  - Load models │
+      │  - Test audio  │
+      │  - Calc metrics│
+      └───────┬────────┘
+              │
+     ┌────────┼────────┐
+     │        │        │
+┌────▼──┐┌────▼──┐┌────▼──┐
+│ Granite││Whisper││ Wav2V ││ ... 5 models
+│ Model  ││ Model ││ Model │
+└────┬──┘└────┬──┘└────┬──┘
+     │        │        │
+     └────────┼────────┘
+              │
+      ┌───────▼───────────┐
+      │  Metrics Engine   │
+      │ - WER/CER calc    │
+      │ - RTF calc        │
+      │ - Accuracy calc   │
+      │ - Aggregation     │
+      └───────┬───────────┘
+              │
+      ┌───────▼──────────┐
+      │ JSON Results     │
+      │ with schema      │
+      └──────────────────┘
+```
+
 ## Features
 
 - **5 ASR Models**: IBM Granite, OpenAI Whisper, NVIDIA Canary, Distil-Whisper, Wav2Vec2
@@ -19,6 +68,39 @@ A comprehensive benchmarking framework for evaluating automatic speech recogniti
 - **15+ Test Scenarios**: Clean speech, background noise, accents, fast/slow speech, technical terms, etc.
 - **Flexible Evaluation Modes**: Speed, accuracy, or complete evaluation
 - **JSON Output Schema**: Standardized metrics schema for result storage
+
+## Model Comparison Overview
+
+| Model | Architecture | Speed | Accuracy | Best For |
+|-------|--------------|-------|----------|----------|
+| **Whisper** | Encoder-Decoder Transformer | ~1.2x RTF | ⭐⭐⭐⭐⭐ | General-purpose, high accuracy |
+| **Wav2Vec2** | Self-Supervised Conv | ~0.5x RTF | ⭐⭐⭐⭐ | Fast inference, real-time |
+| **Distil-Whisper** | Distilled Whisper | ~0.4x RTF | ⭐⭐⭐⭐⭐ | Edge devices, fast + accurate |
+| **Canary** | NVIDIA Multi-Task | ~1.5x RTF | ⭐⭐⭐⭐⭐ | Enterprise-grade accuracy |
+| **Granite** | Code-Instruct LLM | ~2.0x RTF | ⭐⭐⭐ | Multi-task (ASR + NLU) |
+
+## Evaluation Dimensions
+
+### 📊 Accuracy Metrics
+- **WER**: Percentage of words transcribed incorrectly
+- **CER**: Character-level error rate for detailed analysis
+- **Accuracy**: 100% - WER, normalized to percentage
+
+### ⚡ Speed Metrics
+- **RTF**: Real-Time Factor (inference_time / audio_duration)
+  - < 1.0 = Real-time capable
+  - > 1.0 = Requires more compute
+- **Inference Time**: Absolute seconds to transcribe
+
+### 🎯 Robustness Testing
+- Clean English speech (baseline)
+- Background noise (office, street)
+- Accented English
+- Fast/slow speech rates
+- Technical vocabulary
+- Whispered speech
+- Phone quality audio
+- And more scenarios
 
 ## Installation
 
@@ -165,6 +247,36 @@ Results location: `results/asr_eval_results_{type}_{timestamp}.json`
 ├── asr_eval_metrics_schema.json  # Output schema
 └── requirements.txt              # Python dependencies
 ```
+
+## When to Use This Framework
+
+### ✅ Perfect For:
+- **Benchmarking ASR models** before production deployment
+- **Comparing model tradeoffs** (speed vs accuracy)
+- **Testing robustness** against real-world audio conditions
+- **Evaluating cost-performance** of different models
+- **Research and academic** speech recognition studies
+- **Quality assurance** in voice-enabled applications
+
+### 🎯 Real-World Scenarios:
+
+**Scenario 1: Call Center AI**
+- Evaluate which model handles phone quality audio best
+- Test robustness against background noise
+- Measure inference speed for cost calculation
+- Result: Select fastest model that maintains accuracy
+
+**Scenario 2: Voice Assistant**
+- Test against various accents and speech rates
+- Evaluate technical command recognition
+- Measure real-time performance on edge devices
+- Result: Pick model that runs on-device with good accuracy
+
+**Scenario 3: Transcription Service**
+- Benchmark accuracy across multiple languages
+- Evaluate cost vs accuracy tradeoffs
+- Test on domain-specific vocabulary
+- Result: Choose optimal model for service tier
 
 ## Test Matrix
 
