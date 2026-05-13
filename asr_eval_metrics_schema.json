@@ -1,0 +1,121 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ASR Evaluation Metrics Schema",
+  "type": "object",
+  "properties": {
+    "evaluation_metadata": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "evaluator_version": {
+          "type": "string"
+        },
+        "models_tested": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "test_scenarios": {
+          "type": "integer"
+        }
+      }
+    },
+    "model_results": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "model_name": {
+            "type": "string"
+          },
+          "model_id": {
+            "type": "string"
+          },
+          "initialized": {
+            "type": "boolean"
+          },
+          "test_results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "test_id": {
+                  "type": "integer"
+                },
+                "test_name": {
+                  "type": "string"
+                },
+                "wer": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "cer": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "accuracy": {
+                  "type": "number",
+                  "minimum": 0,
+                  "maximum": 100
+                },
+                "inference_time": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "rtf": {
+                  "type": "number"
+                },
+                "hypothesis": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "aggregate_metrics": {
+            "type": "object",
+            "properties": {
+              "mean_wer": {
+                "type": "number"
+              },
+              "mean_cer": {
+                "type": "number"
+              },
+              "mean_rtf": {
+                "type": "number"
+              },
+              "mean_accuracy": {
+                "type": "number"
+              },
+              "std_wer": {
+                "type": "number"
+              },
+              "std_rtf": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "properties": {
+        "total_tests": {
+          "type": "integer"
+        },
+        "evaluation_type": {
+          "type": "string",
+          "enum": ["accuracy", "speed", "all"]
+        },
+        "status": {
+          "type": "string",
+          "enum": ["completed", "partial", "failed"]
+        }
+      }
+    }
+  }
+}

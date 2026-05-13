@@ -1,0 +1,9 @@
+librosa==0.10.0
+numpy==1.24.3
+scipy==1.11.4
+pytest==7.4.3
+soundfile==0.12.1
+pyyaml==6.0
+python-dotenv==1.0.0
+tqdm==4.66.1
+jiwer==3.0.6

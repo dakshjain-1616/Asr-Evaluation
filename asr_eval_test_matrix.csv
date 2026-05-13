@@ -1,0 +1,16 @@
+test_id,test_name,category,description,audio_characteristics,expected_difficulty
+1,clean_english,accuracy,Clean English speech without background noise,16kHz mono clean audio,easy
+2,background_noise_office,robustness,Office environment with ambient noise,16kHz with office background,medium
+3,background_noise_street,robustness,Street traffic and ambient noise,16kHz with street noise,hard
+4,accented_english,robustness,Non-native English speaker accent,16kHz with accent,medium
+5,fast_speech,robustness,Speaker talking at fast pace,16kHz fast speech rate,hard
+6,slow_speech,robustness,Speaker talking at slow pace,16kHz slow speech rate,easy
+7,technical_vocabulary,accuracy,Technical terms and jargon,16kHz technical speech,hard
+8,multiple_speakers,robustness,Multiple speakers in sequence,16kHz multi-speaker,hard
+9,whispered_speech,robustness,Whispered speech,16kHz whispered,hard
+10,music_background,robustness,Speech with music in background,16kHz with music,hard
+11,phone_quality,robustness,Phone/VoIP quality audio,8kHz compressed audio,medium
+12,silence_gaps,robustness,Long silence periods between speech,16kHz with silence,medium
+13,emotional_speech,robustness,Emotional or emphatic speech,16kHz emotional tone,medium
+14,acronyms,accuracy,Acronyms and abbreviations,16kHz acronyms,medium
+15,numbers_dates,accuracy,Numbers and date formats,16kHz number/date heavy,medium
