@@ -368,4 +368,4 @@ ISC
 
 ## Author
 
-Claude Code - Automated ASR Evaluation Framework
+Daksh Jain — Built Autonomously with [NEO](https://heyneo.com)
